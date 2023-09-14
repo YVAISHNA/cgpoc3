@@ -3,8 +3,8 @@ from configparser import ConfigParser
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import current_date
 
-def main():
- spark = SparkSession.builder.config("spark.jars", "C:\installers\Drivers\postgresql-42.6.0.jar").appName("jdbc").master("local").getOrCreate()
+#def main():
+ #spark = SparkSession.builder.config("spark.jars", "C:\installers\Drivers\postgresql-42.6.0.jar").appName("jdbc").master("local").getOrCreate()
 
  config = ConfigParser()
 
@@ -87,21 +87,6 @@ group by i.CATEGORY  order by sum(od.ITEM_QUANTITY) desc'''
    data.write.mode("overwrite").jdbc(properties['url'],table='Item_descending',properties=properties)
    data.coalesce(1).write.mode("overwrite").partitionBy('current_date').parquet('C:/query/Item_descending')
 
-# def query5(spark,properties):
-#    query5= '''select i.ITEM_ID,i.ITEM_DESCRIPTION , sum(i.ITEM_QUANTITY * od.DETAIL_UNIT_PRICE) as count from item_view i
-# left join details_view od on (i.ITEM_ID = i.ITEM_ID)
-# group by i.ITEM_ID,i.ITEM_DESCRIPTION  order by sum(od.ITEM_QUANTITY * od.DETAIL_UNIT_PRICE) desc'''
-#    data = spark.sql(query5).withColumn('current_date', current_date())
-#    data.show()
-#    data.write.mode("overwrite").jdbc(properties['url'],table='query5',properties=properties)
-#    data.coalesce(1).write.mode("overwrite").partitionBy('current_date').parquet('C:/query/query5')
-# #wire.write.jdbc(properties['url'], table='temp_customers', properties=properties)
-# wire.write.parquet('C:/query/temp_cust')
-#     # Display the schema of the DataFrame
-# #parquet_df.printSchema()
-#
-#     # Show the first few rows of the DataFrame
-# #parquet_df.show()
 
 
 
